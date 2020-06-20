@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="moe.ofs.lsograde.mapper.ErrorItemMapper">
+
+    <resultMap id="errorItemMap" type="moe.ofs.lsograde.model.ErrorItem">
+        <id property="id" column="id" />
+        <result property="level" column="level" />
+        <result property="position" column="position" />
+        <result property="error" column="error" />
+    </resultMap>
+
+    <insert id="insertList" useGeneratedKeys="true" keyProperty="id">
+        insert into error_item(
+            level, position, error
+        ) values
+        <foreach collection="list" item="item" separator=",">
+            (
+             #{item.level}, #{item.position}, #{item.error}
+            )
+        </foreach>
+    </insert>
+</mapper>

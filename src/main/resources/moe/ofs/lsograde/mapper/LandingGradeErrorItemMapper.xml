@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="moe.ofs.lsograde.mapper.LandingGradeErrorItemMapper">
+
+    <insert id="insertListByLandingGradeId">
+        insert into landing_grade_error_item(
+            landing_grade_id, error_item_id
+        ) values
+        <foreach collection="errors" item="item" separator=",">
+            (
+                #{id}, #{item.id}
+            )
+        </foreach>
+    </insert>
+</mapper>

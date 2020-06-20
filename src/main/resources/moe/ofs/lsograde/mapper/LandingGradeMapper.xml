@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="moe.ofs.lsograde.mapper.LandingGradeMapper">
+
+    <resultMap id="landingGradeMap" type="moe.ofs.lsograde.model.LandingGrade">
+        <id property="id" column="id" />
+        <result property="rawGrade" column="raw_grade" />
+        <result property="carrierName" column="carrier_name" />
+        <result property="aircraftType" column="aircraft_type" />
+        <result property="grade" column="grade" />
+        <result property="wire" column="wire" />
+        <result property="timestamp" column="timestamp" jdbcType="TIMESTAMP" />
+    </resultMap>
+
+    <resultMap id="landingGradeErrorItemMap" extends="landingGradeMap" type="moe.ofs.lsograde.model.LandingGrade">
+        <collection property="errorItems" columnPrefix="error_item_"
+                    resultMap="moe.ofs.lsograde.mapper.ErrorItemMapper.errorItemMap"/>
+    </resultMap>
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id" >
+        insert into landing_grade(
+            timestamp, raw_grade, carrier_name, aircraft_type, grade, wire
+        ) values (
+                  #{timestamp, jdbcType=TIMESTAMP}, #{rawGrade}, #{carrierName},
+                  #{aircraftType}, #{grade}, #{wire})
+    </insert>
+
+    <select id="selectById" resultMap="landingGradeMap">
+        select * from landing_grade where id = #{id}
+    </select>
+
+    <select id="selectAll" parameterType="list" resultMap="landingGradeMap">
+        select
+               id, timestamp, raw_grade, carrier_name, aircraft_type, grade, wire
+        from landing_grade
+    </select>
+
+    <select id="selectLandingGradeErrorItemById" resultMap="landingGradeErrorItemMap">
+        select
+               lg.id,
+               timestamp,
+               raw_grade,
+               carrier_name,
+               aircraft_type,
+               grade,
+               wire,
+               err.id error_item_id,
+               err.error error_item_error,
+               err.level error_item_level,
+               err.position error_item_position
+        from landing_grade lg
+        inner join landing_grade_error_item lggi on lg.id = lggi.landing_grade_id
+        inner join error_item err on err.id = lggi.error_item_id
+        where lg.id = #{id}
+    </select>
+
+</mapper>
