@@ -13,7 +13,7 @@ public class GradeConfig {
     };
 
     private String[] errorSingle = {
-            "F", "H", "N", "W", "P", "LO"
+            "F", "H", "N", "W", "P", "LO", "B"
     };
 
     private String[] distMark = {
